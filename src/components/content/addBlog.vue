@@ -6,7 +6,7 @@
     <el-container direction="vertical" class="addBlog-main">
       <el-row>
         <el-col>
-          <form v-if="!submitted">
+          <form id="submit-form" v-if="!submitted">
             <div class="addBlog-title">
               <label>标题：</label><input type="text" required="required" v-model="blog.title"/>
             </div>
@@ -25,7 +25,9 @@
                 <option v-for='author in blog.authors'>{{author}}</option>
               </select>
             </div>
+
             <el-button @click="postFn">添加博客</el-button>
+
           </form>
           <el-row v-if="submitted">
             <el-col><h3>博客发布成功</h3></el-col>
@@ -68,8 +70,7 @@
           }
       },
       methods:{
-
-          /*模拟把博客添加信息添加到服务器*/
+          /*模拟把博客信息添加到服务器*/
           postFn:function () {
             this.$http.post(
               "http://jsonplaceholder.typicode.com/posts",    //服务器URL
@@ -79,7 +80,7 @@
                 userId:1
               }
             ).then((data)=>{
-              console.log(data);    //测试
+              console.log(data);    //测试(查看传输的数据)
                 this.submitted = true;
             })
           }
@@ -88,5 +89,10 @@
 </script>
 
 <style scoped>
-
+  #submit-form{
+    padding: 20px;
+  }
+  .addBlog-title,.addBlog-content,.addBlog-category,.addBlog-author{
+    margin-bottom: 20px;
+  }
 </style>

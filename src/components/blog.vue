@@ -1,9 +1,13 @@
 <template>
   <el-container direction="vertical">
-    <el-header><h1>My Blog</h1></el-header>
-    <el-container class="blog-main">
+    <el-header>
+      <h1>My Blog</h1>
+    </el-header>
+    <el-container direction="vertical" class="blog-main">
+      <el-row type="flex" justify="end">
+        <el-col :span="4"><router-link to="addBlog">添加博客</router-link></el-col>
+      </el-row>
       <el-main>
-        <!--<add-blog></add-blog>-->
         <show-blog></show-blog>
       </el-main>
     </el-container>
@@ -32,10 +36,12 @@
     text-align: center;
   }
   .blog-main{
-    width: 1200px;
     height: auto;
     overflow: hidden;
     margin: 0 auto;
   }
-
+  a{
+    text-decoration: none;
+    color: #000;
+  }
 </style>
