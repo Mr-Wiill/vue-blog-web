@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Blog from '../components/blog'
+import showBlog from '../components/content/showBlog'
 import AddBlog from '../components/content/addBlog'
 
 Vue.use(VueRouter);
@@ -8,8 +8,15 @@ Vue.use(VueRouter);
 /*配置路由*/
 export default new VueRouter({
   routes:[
-    {path: '/', component: Blog},
-    {path: '/addBlog', component: AddBlog}
+    { /*首页*/
+      path: '/',
+      component: showBlog,
+
+    },
+    { /*添加博客*/
+      path: '/addBlog',
+      component: AddBlog
+    }
   ],
   mode: 'history'   //去掉地址里的#
 })

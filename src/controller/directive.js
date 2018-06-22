@@ -3,7 +3,7 @@ import Vue from 'vue'
 /*自定义指令*/
 Vue.directive('rainbow',{
   bind(el, binding,vnode){
-    el.style.color = '#'+ Math.random().toString(16).slice(2,6);    //随机生成博客标题字体颜色颜色
+    el.style.color = '#696969';
   }
 });
 Vue.directive('theme',
