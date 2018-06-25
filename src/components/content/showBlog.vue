@@ -12,7 +12,7 @@
               <h4 class="read-more" @click="showBlog"><a>阅读全文</a></h4>
             </el-col>
           </el-row>
-          <dia-log v-if="showLog" :title="obj.title" :body="obj.body"></dia-log>
+          <dia-log v-if="showLog" v-for="obj in blog" @closed="closeDialog" :title="obj.title" :body="obj.body"></dia-log>
         </div>
       </el-col>
     </el-row>
@@ -41,36 +41,14 @@ import diaLog from '../../components/dialog/dialog'
       methods:{
         showBlog(){
           this.showLog =!this.showLog;
+        },
+        closeDialog(val){
+          this.showLog = val.showLog;
         }
       }
     }
 </script>
 
 <style scoped>
-  .dialog-bg{
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(0,0,0,.1);
-  }
-  .read-more-dialog{
-    width: 50%;
-    height: auto;
-    margin: 50px auto;
-    background: #f8f9fa;
-    position: relative;
-    padding: 20px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    border-radius: 8px;
-  }
-  .el-icon-close{
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
-  }
 
 </style>

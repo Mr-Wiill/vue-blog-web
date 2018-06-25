@@ -3,7 +3,7 @@
     <div class="read-more-dialog">
       <h4 v-rainbow>{{title}}</h4>
       <article class="blog-article">{{body}}</article>
-      <i class="el-icon-close"></i>
+      <i @click="close" class="el-icon-close"></i>
     </div>
   </el-container>
 </template>
@@ -11,15 +11,20 @@
 <script>
 
     export default {
-      name: "dialog",
+      name: "v-dialog",
       props:['title','body'],
       data(){
           return {
 
           }
       },
-      created(){
-
+      methods:{
+        /*关闭窗口*/
+        close(){
+          this.$emit('closed',{     //closed用于父组件中绑定的自定义的事件名，$emit用于触发事件
+            showLog : false       //子组件向父组件传值
+          })
+        }
       }
     }
 </script>
@@ -50,5 +55,4 @@
     right: 5px;
     cursor: pointer;
   }
-
 </style>
