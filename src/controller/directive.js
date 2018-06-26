@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
-/*自定义指令*/
+/*自定义全局指令*/
+/*
 Vue.directive('rainbow',{
   bind(el, binding,vnode){
     el.style.color = '#696969';
@@ -22,3 +23,4 @@ Vue.directive('box',
       el.style.background = '#F7E3E2'
     }
   });
+*/

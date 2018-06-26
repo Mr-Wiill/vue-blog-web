@@ -26,30 +26,33 @@ export default {
     background: #F2F2F2;
     color: #696969;
   }
+  #app{
+    min-width: 760px;
+  }
   h1,h2,h3,h4,h5,ul,li{
     margin: 0;
     padding: 0;
     list-style: none;
   }
+  a{
+    text-decoration: none;
+  }
   /*blog show*/
   .blog-box{
     line-height: 30px;
-    margin-bottom: 50px;
+    margin: 40px 20px;
     padding: 20px;
     border-radius: 8px;
   }
-  .blog-article{
+  .blog-box h4{
+    cursor: pointer;
+  }
+  .blog-article a{
     color: #696969;
-    text-indent: 2em;
   }
   .inscribe{
     font-size: 13px;
     color: #8c8c8c;
   }
-  .read-more{
-    width: auto;
-    color: #F15948;
-    cursor:pointer;
-    text-align: center;
-  }
+
 </style>

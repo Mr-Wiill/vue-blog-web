@@ -2,17 +2,13 @@
   <el-container direction="vertical"  v-theme:bg="'wide'">
     <el-row type="flex" justify="center" >
       <el-col >
-        <div class="blog-box" v-for="obj in blog" v-box="'box'">
-          <h4 v-rainbow>{{obj.title}}</h4>
-          <article class="blog-article">{{obj.body}}</article>
+        <div class="blog-box" v-for="blog in filteredBlogs" v-box="'box'">
+          <h4 v-rainbow><router-link :to="'/blog/'+blog.id">{{blog.title | toUpCase}}</router-link></h4>
+          <article class="blog-article">{{blog.body | snippet}}</article>
           <el-row class="inscribe" type="flex" align="bottom">
             <el-col :span="4">分类：vue.js</el-col>
             <el-col :span="4">作者：pony</el-col>
-            <el-col :span="2" :offset="12" >
-              <h4 class="read-more" @click="showBlog"><a>阅读全文</a></h4>
-            </el-col>
           </el-row>
-          <dia-log v-if="showLog" v-for="obj in blog" @closed="closeDialog" :title="obj.title" :body="obj.body"></dia-log>
         </div>
       </el-col>
     </el-row>
@@ -26,25 +22,58 @@ import diaLog from '../../components/dialog/dialog'
       components:{
           diaLog
       },
+      props:['search'],
       data(){
           return {
-            blog:[],
-            showLog:false
+            blogs:[],
           }
       },
-      created(){
-          this.$http.get('http://jsonplaceholder.typicode.com/posts')
-            .then((data)=>{
-              this.blog = data.body.slice(0,10);
-            })
+      created(){      //读取服务器数据
+        this.$http.get('http://jsonplaceholder.typicode.com/posts')
+          .then((data)=>{
+            this.blogs = data.body.slice(0,10);
+          })
       },
       methods:{
-        showBlog(){
-          this.showLog =!this.showLog;
+
+      },
+      directives:{     //自定义事件
+        'rainbow':{
+          bind(el){
+            el.style.color = '#696969';
+          }
         },
-        closeDialog(val){
-          this.showLog = val.showLog;
+        'theme':{
+          bind(el,binding){
+            if (binding.value == 'wide'){
+              el.style.maxWidth = '985px';     //改变展示内容宽度
+              el.style.minWidth = '760px'
+            }
+            if (binding.arg == 'bg'){
+              el.style.background = '#CB554D';
+              // el.style.padding = '20px'
+            }
+          }
+        },
+        'box':{
+          bind(el,binding){
+            if (binding.value == 'box'){
+              el.style.background = '#F7E3E2'
+            }
+          }
         }
+      },
+      computed:{
+          filteredBlogs:function(){       //过滤搜索结果
+            return this.blogs.filter((blog)=>{
+              if (blog.title.match(this.search.toLowerCase())) {      //博客标题匹配
+                return blog.title.match(this.search.toLowerCase());
+              }
+              else {
+                return blog.body.match(this.search.toLowerCase())     //博客内容匹配
+              }
+            })
+          }
       }
     }
 </script>
