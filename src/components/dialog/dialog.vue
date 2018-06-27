@@ -1,9 +1,11 @@
 <template>
   <el-container class="dialog-bg">
     <div class="detailed-dialog">
-      <h2>{{blog.title}}</h2>
-      <div>{{id}}</div>
-      <article class="blog-article">{{blog.body}}</article>
+      <h4>{{msg}}</h4>
+      <el-row :gutter="20" class="reset-button">
+        <el-col :span="12"><el-button><router-link to="/">查看博客</router-link></el-button></el-col>
+        <el-col :span="12"><el-button @click="close">重新编辑</el-button></el-col>
+      </el-row>
       <i @click="close" class="el-icon-close"></i>
     </div>
     <div @click="close" class="dialog-fade"></div>
@@ -16,25 +18,17 @@
       name: "v-dialog",
       data(){
           return {
-            // id:1,
-            blog:{}
+            msg:'发布成功！'
           }
       },
-      props:['id'],
       methods:{
         /*关闭窗口*/
         close(){
           this.$emit('closed',{     //closed用于父组件中绑定的自定义的事件名，$emit用于触发事件
-            showLog : false       //子组件向父组件传值
+            submitted : false       //子组件向父组件传值
           })
         }
       },
-      created(){
-        this.$http.get("http://jsonplaceholder.typicode.com/posts/"+this.id)
-          .then((data)=>{
-            this.blog = data.body;
-          })
-      }
     }
 </script>
 
@@ -45,12 +39,14 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(0,0,0,.1);
+    background: rgba(0,0,0,.6);
+    z-index: 1;
   }
   .detailed-dialog{
-    width: 50%;
-    height: auto;
-    margin: 50px auto;
+    min-width:200px ;
+    height: 100px;
+    text-align: center;
+    margin: 200px auto;
     background: #f8f9fa;
     position: relative;
     padding: 20px;
@@ -58,6 +54,7 @@
     -moz-border-radius: 8px;
     border-radius: 8px;
     z-index: 999;
+    color: #696969;
   }
   .detailed-dialog h2{
     text-align: center;
@@ -77,8 +74,7 @@
     right: 5px;
     cursor: pointer;
   }
-  .blog-article{
-    padding: 10px 0;
-    text-indent: 2em;
+  .reset-button{
+    margin-top: 40px;
   }
 </style>

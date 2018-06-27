@@ -79,5 +79,7 @@ import diaLog from '../../components/dialog/dialog'
 </script>
 
 <style scoped>
-
+  .blog-box a{
+    color: #696969;
+  }
 </style>

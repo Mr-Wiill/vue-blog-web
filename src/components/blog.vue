@@ -3,21 +3,21 @@
     <el-header>
       <el-row class="header-row" >
         <el-col class="header-title" :span="6" >
-          <h1><router-link to="/blog">My Blog</router-link></h1>
+          <h1><router-link to="/">My Blog</router-link></h1>
         </el-col>
         <el-col :span="8" :offset="2" class="search">
           <input class="search-input" placeholder="Search"  v-model="search"/>
           <i class="el-icon-search"></i>
         </el-col>
         <el-col :span="3" :offset="4">
-          <router-link to="addBlog" class="add-blog-btn">写博客</router-link>
+          <router-link to="/addBlog" class="add-blog-btn">写博客</router-link>
         </el-col>
       </el-row>
     </el-header>
     <el-container direction="vertical" class="blog-main">
       <el-main>
         <router-view :search="search">
-          <router-link to="/blog"></router-link>
+          <router-link></router-link>
         </router-view>
       </el-main>
     </el-container>

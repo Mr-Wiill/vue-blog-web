@@ -35,6 +35,7 @@ export default {
     list-style: none;
   }
   a{
+    color: #696969;
     text-decoration: none;
   }
   /*blog show*/
