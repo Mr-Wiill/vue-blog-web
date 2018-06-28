@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Blog from '../components/blog'
 import showBlog from '../components/content/showBlog'
 import AddBlog from '../components/content/addBlog'
 import Detail from '../components/content/detail'
+import EditBlog from '../components/content/editBlog'
 
 Vue.use(VueRouter);
 
@@ -21,6 +21,10 @@ export default new VueRouter({
     {
       path:'/blog/:id',
       component:Detail
+    },
+    {
+      path:'/editBlog/:id',
+      component:EditBlog
     }
   ],
   mode: 'history'   //去掉地址里的#

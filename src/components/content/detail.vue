@@ -4,10 +4,15 @@
       <el-col>
         <div class="detail-blog-box">
           <h2>{{blog.title}}</h2>
-          <article class="detail-blog-article">{{blog.body}}</article>
+          <article class="detail-blog-article">{{blog.content}}</article>
           <el-row class="detail-inscribe" type="flex" align="bottom">
-            <el-col :span="4">分类：{{classify}}</el-col>
-            <el-col :span="4">作者：{{author}}</el-col>
+            <span>分类：</span>
+            <el-col :span="1" class="el-col-category" v-for="category in blog.categories">{{category}}</el-col>
+            <el-col :span="4" :offset="2">作者：{{blog.author}}</el-col>
+            <el-col :span="4" :offset="2">
+              <el-button @click="deleteBlog">删除</el-button>
+              <router-link :to="'/editBlog/'+id">编辑</router-link>
+            </el-col>
           </el-row>
         </div>
       </el-col>
@@ -20,24 +25,35 @@
       name: "v-dialog",
       data(){
           return {
-            classify:'vue.js',
-            author:'pony',
             id : this.$route.params.id,
             blog:{}
           }
       },
       created(){
-        this.$http.get("http://jsonplaceholder.typicode.com/posts/"+this.id)
+        this.$http.get("https://vue-blog-v112.firebaseio.com/posts/"+this.id+'.json')
           .then((data)=>{
-            this.blog = data.body;
+            // console.log(data)
+            // this.blog = data.body;
+            return data.json();
           })
+          .then((data)=>{
+            this.blog = data;
+          })
+      },
+      methods:{
+        deleteBlog(){
+          this.$http.delete('https://vue-blog-v112.firebaseio.com/posts/'+this.id+'.json')
+            .then(response=>{
+              this.$router.push({path:'/'});
+            })
+        }
       }
     }
 </script>
 
 <style scoped>
   .detail-container{
-    max-width: 850px;
+    width: 850px;
     background: #fff;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -59,5 +75,8 @@
   .detail-inscribe{
     font-size: 13px;
     color: #8c8c8c;
+  }
+  .el-col-category{
+    margin-right: 10px;
   }
 </style>

@@ -4,10 +4,11 @@
       <el-col >
         <div class="blog-box" v-for="blog in filteredBlogs" v-box="'box'">
           <h4 v-rainbow><router-link :to="'/blog/'+blog.id">{{blog.title | toUpCase}}</router-link></h4>
-          <article class="blog-article">{{blog.body | snippet}}</article>
+          <article class="blog-article">{{blog.content | snippet}}</article>
           <el-row class="inscribe" type="flex" align="bottom">
-            <el-col :span="4">分类：vue.js</el-col>
-            <el-col :span="4">作者：pony</el-col>
+            <span>分类：</span>
+            <el-col :span="1" class="el-col-category" v-for="category in blog.categories">{{category}}</el-col>
+            <el-col :span="4" :offset="2">作者：{{blog.author}}</el-col>
           </el-row>
         </div>
       </el-col>
@@ -29,9 +30,20 @@ import diaLog from '../../components/dialog/dialog'
           }
       },
       created(){      //读取服务器数据
-        this.$http.get('http://jsonplaceholder.typicode.com/posts')
+        this.$http.get('https://vue-blog-v112.firebaseio.com/posts.json')
           .then((data)=>{
-            this.blogs = data.body.slice(0,10);
+            // this.blogs = data.body.slice(0,10);
+            // console.log(data.json());
+            return data.json();       //读取的是一个对象，并返回出去
+          })
+          .then((data)=>{
+            var blogsArr = [];      //定义一个空数组，接收返回的一个个对象
+            for (let key in data){
+              data[key].id = key;   //给对象定义一个id，并把唯一key赋值给id
+              blogsArr.push(data[key]);   //把读取的对象都添加到空数组里面
+            }
+            this.blogs = blogsArr;    //把blogsArr赋值给blogs
+            // console.log(blogsArr)
           })
       },
       methods:{
@@ -46,8 +58,7 @@ import diaLog from '../../components/dialog/dialog'
         'theme':{
           bind(el,binding){
             if (binding.value == 'wide'){
-              el.style.maxWidth = '985px';     //改变展示内容宽度
-              el.style.minWidth = '760px'
+              el.style.width = '850px';     //改变展示内容宽度
             }
             if (binding.arg == 'bg'){
               el.style.background = '#CB554D';
@@ -70,7 +81,7 @@ import diaLog from '../../components/dialog/dialog'
                 return blog.title.match(this.search.toLowerCase());
               }
               else {
-                return blog.body.match(this.search.toLowerCase())     //博客内容匹配
+                return blog.content.match(this.search.toLowerCase())     //博客内容匹配
               }
             })
           }
@@ -81,5 +92,8 @@ import diaLog from '../../components/dialog/dialog'
 <style scoped>
   .blog-box a{
     color: #696969;
+  }
+  .el-col-category{
+    margin-right: 10px;
   }
 </style>

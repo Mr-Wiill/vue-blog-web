@@ -2,7 +2,7 @@
   <el-container direction="vertical" class="addBlog-main">
     <el-row>
       <el-col>
-        <form id="submit-form" v-if="!submitted">
+        <form id="submit-form">
           <div class="addBlog-title">
             <el-input type="text" placeholder="博客标题" required="required" v-model="blog.title"/>
           </div>
@@ -21,60 +21,42 @@
           <div class="addBlog-content">
             <textarea v-model="blog.content" placeholder="博客内容"></textarea>
           </div>
-          <el-button @click="postFn">发布博客</el-button>
+          <el-button @click="postFn">更新博客</el-button>
         </form>
-        <dia-log v-if="submitted" @closed="closed($event)"></dia-log>
       </el-col>
     </el-row>
-    <el-container direction="vertical">
-      <el-row>
-        <el-col>
-          <div class="preview-blog-head"><h3>博客预览</h3></div>
-          <div class="preview-content">
-            <h2>{{blog.title}}</h2>
-            <article class="preview-blog-article">{{blog.content}}</article>
-            <el-row class="inscribe" type="flex" align="bottom">
-              <el-col v-for="item in blog.categories" :span="4">{{item}}</el-col>
-              <el-col :span="4">{{blog.author}}</el-col>
-            </el-row>
-          </div>
-        </el-col>
-      </el-row>
-    </el-container>
   </el-container>
 </template>
 
 <script>
-    import DiaLog from '../../components/dialog/dialog'
     export default {
         name: "addBlog",
-      components:{
-        DiaLog
-      },
       data(){
           return {
+            // submitted:false,
             authors:['jack','tom','pony'],
-            submitted:false,
-            blog:{
-              title:'',
-              content:'',
-              author:'',
-              categories:[],
-            }
+            id: this.$route.params.id,
+            blog:{}
           }
       },
       methods:{
+          updateBlog(){
+            this.$http.get("https://vue-blog-v112.firebaseio.com/posts/"+this.id+'.json')
+              .then(response=>{
+                // console.log(response.body);
+                this.blog = response.body
+              })
+          },
           /*模拟把博客信息添加到服务器*/
           postFn:function () {
-            this.$http.post("https://vue-blog-v112.firebaseio.com/posts.json", this.blog)
-              .then((data)=>{
-              console.log(data);    //测试(查看传输的数据)
-              this.submitted = true;
+            this.$http.put("https://vue-blog-v112.firebaseio.com/posts/"+this.id+'.json', this.blog)
+              .then( response=>{
+                this.$router.push({path:'/'})
             })
           },
-        closed(event,value){
-            this.submitted = value;
-        }
+      },
+      created(){
+          this.updateBlog()     //页面加载的是执行updateBlog函数
       }
     }
 </script>
