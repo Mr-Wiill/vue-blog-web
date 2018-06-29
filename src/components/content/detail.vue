@@ -7,11 +7,11 @@
           <article class="detail-blog-article">{{blog.content}}</article>
           <el-row class="detail-inscribe" type="flex" align="bottom">
             <span>分类：</span>
-            <el-col :span="1" class="el-col-category" v-for="category in blog.categories">{{category}}</el-col>
+            <el-col :span="2" class="el-col-category" v-for="category in blog.categories">{{category}}</el-col>
             <el-col :span="4" :offset="2">作者：{{blog.author}}</el-col>
-            <el-col :span="4" :offset="2">
-              <el-button @click="deleteBlog">删除</el-button>
+            <el-col :span="8" :offset="2" class="blog-edit">
               <router-link :to="'/editBlog/'+id">编辑</router-link>
+              <a @click="deleteBlog">删除</a>
             </el-col>
           </el-row>
         </div>
@@ -76,7 +76,22 @@
     font-size: 13px;
     color: #8c8c8c;
   }
-  .el-col-category{
-    margin-right: 10px;
+  .blog-edit{
+    text-align: right;
+  }
+  .blog-edit a{
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    display:inline-block;
+    margin-left: 10px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .blog-edit a:first-child{
+    color: blue;
+  }
+  .blog-edit a:last-child{
+    color: red;
   }
 </style>

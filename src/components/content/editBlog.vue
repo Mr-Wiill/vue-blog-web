@@ -51,7 +51,7 @@
           postFn:function () {
             this.$http.put("https://vue-blog-v112.firebaseio.com/posts/"+this.id+'.json', this.blog)
               .then( response=>{
-                this.$router.push({path:'/'})
+                this.$router.push({path:"/blog/"+this.id})
             })
           },
       },

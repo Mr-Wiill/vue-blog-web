@@ -46,7 +46,7 @@ export default {
     padding: 20px;
     border-radius: 8px;
   }
-  .blog-box h4{
+  .blog-box h4 a{
     cursor: pointer;
   }
   .blog-article a{

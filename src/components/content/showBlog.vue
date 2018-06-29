@@ -7,7 +7,7 @@
           <article class="blog-article">{{blog.content | snippet}}</article>
           <el-row class="inscribe" type="flex" align="bottom">
             <span>分类：</span>
-            <el-col :span="1" class="el-col-category" v-for="category in blog.categories">{{category}}</el-col>
+            <el-col :span="2" class="" v-for="category in blog.categories">{{category}}</el-col>
             <el-col :span="4" :offset="2">作者：{{blog.author}}</el-col>
           </el-row>
         </div>
@@ -92,8 +92,5 @@ import diaLog from '../../components/dialog/dialog'
 <style scoped>
   .blog-box a{
     color: #696969;
-  }
-  .el-col-category{
-    margin-right: 10px;
   }
 </style>
