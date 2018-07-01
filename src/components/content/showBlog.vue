@@ -6,9 +6,12 @@
           <h4 v-rainbow><router-link :to="'/blog/'+blog.id">{{blog.title | toUpCase}}</router-link></h4>
           <article class="blog-article">{{blog.content | snippet}}</article>
           <el-row class="inscribe" type="flex" align="bottom">
-            <span>分类：</span>
-            <el-col :span="2" class="" v-for="category in blog.categories">{{category}}</el-col>
-            <el-col :span="4" :offset="2">作者：{{blog.author}}</el-col>
+            <el-col :span="8" class="el-col-category" >
+              <ul>分类：
+                <li v-for="category in blog.categories">{{category}}</li>
+              </ul>
+            </el-col>
+            <el-col :span="4">作者：{{blog.author}}</el-col>
           </el-row>
         </div>
       </el-col>
@@ -92,5 +95,11 @@ import diaLog from '../../components/dialog/dialog'
 <style scoped>
   .blog-box a{
     color: #696969;
+  }
+  .el-col-category ul li{
+    list-style: none;
+    padding: 0;
+    margin-right: 10px;
+    display: inline-block;
   }
 </style>

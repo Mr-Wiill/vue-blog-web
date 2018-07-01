@@ -2,6 +2,7 @@
   <el-container class="dialog-bg">
     <div class="detailed-dialog">
       <h4>{{msg}}</h4>
+      <div>{{blogId}}</div>
       <el-row :gutter="20" class="reset-button">
         <el-col :span="12"><el-button><router-link to="/">查看博客</router-link></el-button></el-col>
         <el-col :span="12"><el-button @click="close">重新编辑</el-button></el-col>
@@ -20,6 +21,7 @@
             msg:'发布成功！'
           }
       },
+      props:['blogId'],
       methods:{
         /*关闭窗口*/
         close(){

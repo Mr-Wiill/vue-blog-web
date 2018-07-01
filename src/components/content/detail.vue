@@ -5,11 +5,14 @@
         <div class="detail-blog-box">
           <h2>{{blog.title}}</h2>
           <article class="detail-blog-article">{{blog.content}}</article>
-          <el-row class="detail-inscribe" type="flex" align="bottom">
-            <span>分类：</span>
-            <el-col :span="2" class="el-col-category" v-for="category in blog.categories">{{category}}</el-col>
-            <el-col :span="4" :offset="2">作者：{{blog.author}}</el-col>
-            <el-col :span="8" :offset="2" class="blog-edit">
+          <el-row class="detail-inscribe" type="flex" align="bottom" justify="start">
+            <el-col :span="8" class="el-col-category" >
+              <ul>分类：
+                <li v-for="category in blog.categories">{{category}}</li>
+              </ul>
+            </el-col>
+            <el-col :span="4">作者：{{blog.author}}</el-col>
+            <el-col :span="12" class="blog-edit">
               <router-link :to="'/editBlog/'+id">编辑</router-link>
               <a @click="deleteBlog">删除</a>
             </el-col>
@@ -34,10 +37,10 @@
           .then((data)=>{
             // console.log(data)
             // this.blog = data.body;
-            return data.json();
+            return data.json();   //从服务器里读取blog对象，然后返回
           })
           .then((data)=>{
-            this.blog = data;
+            this.blog = data;     //把返回值赋值给this.blog
           })
       },
       methods:{
@@ -93,5 +96,11 @@
   }
   .blog-edit a:last-child{
     color: red;
+  }
+  .el-col-category ul li{
+    list-style: none;
+    padding: 0;
+    margin-right: 10px;
+    display: inline-block;
   }
 </style>

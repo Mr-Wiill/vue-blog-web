@@ -4,13 +4,13 @@
       <el-col>
         <form id="submit-form" v-if="!submitted">
           <div class="addBlog-title">
-            <el-input type="text" placeholder="博客标题" required="required" v-model="blog.title"/>
+            <input @keyup="previewFn"  type="text" placeholder="博客标题" required="required" v-model="blog.title"/>
           </div>
           <div class="addBlog-category">
             <span>分类：</span>
-            <label>Vue.js</label><input type="checkbox" value="Vue.js" v-model="blog.categories">
-            <label>Node.js</label><input type="checkbox" value="Node.js" v-model="blog.categories">
-            <label>React.js</label><input type="checkbox" value="React.js" v-model="blog.categories">
+            <label for="vue">Vue.js</label><input id="vue" type="checkbox" value="Vue.js" v-model="blog.categories">
+            <label for="node">Node.js</label><input id="node" type="checkbox" value="Node.js" v-model="blog.categories">
+            <label for="react">React.js</label><input id="react" type="checkbox" value="React.js" v-model="blog.categories">
           </div>
           <div class="addBlog-author">
             <label>作者：</label>
@@ -26,16 +26,20 @@
         <dia-log v-if="submitted" @closed="closed($event)"></dia-log>
       </el-col>
     </el-row>
-    <el-container direction="vertical">
+    <el-container direction="vertical" v-if="previewBlog">
       <el-row>
         <el-col>
           <div class="preview-blog-head"><h3>博客预览</h3></div>
           <div class="preview-content">
-            <h2>{{blog.title}}</h2>
+            <h4>{{blog.title}}</h4>
             <article class="preview-blog-article">{{blog.content}}</article>
             <el-row class="inscribe" type="flex" align="bottom">
-              <el-col v-for="item in blog.categories" :span="4">{{item}}</el-col>
-              <el-col :span="4">{{blog.author}}</el-col>
+              <el-col :span="8" class="el-col-category" >
+                <ul>分类：
+                  <li v-for="category in blog.categories">{{category}}</li>
+                </ul>
+              </el-col>
+              <el-col :span="4">作者：{{blog.author}}</el-col>
             </el-row>
           </div>
         </el-col>
@@ -55,6 +59,8 @@
           return {
             authors:['jack','tom','pony'],
             submitted:false,
+            previewBlog:false,
+            blogId:null,
             blog:{
               title:'',
               content:'',
@@ -66,14 +72,24 @@
       methods:{
           /*模拟把博客信息添加到服务器*/
           postFn:function () {
-            this.$http.post("https://vue-blog-v112.firebaseio.com/posts.json", this.blog)
-              .then((data)=>{
-              console.log(data);    //测试(查看传输的数据)
-              this.submitted = true;
-            })
+            // console.log(this.blog.title)
+            if (this.blog.title=='' || this.blog.content=="" || this.blog.author=='' || this.blog.categories==""){
+              alert('必选内容不能为空！')
+            } else{
+              this.$http.post("https://vue-blog-v112.firebaseio.com/posts.json", this.blog)
+                .then((data)=>{
+                  // console.log(data.body.name);    //测试(查看传输的数据)
+                  this.submitted = true;
+                  this.blogId = data.body.name;
+                })
+            }
           },
         closed(event,value){
             this.submitted = value;
+        },
+        previewFn:function(){
+          this.previewBlog = true;
+          // console.log('执行了keyup')
         }
       }
     }
@@ -95,6 +111,7 @@
     border-radius: 8px;
     padding: 20px;
     z-index: 0;
+    box-shadow: 2px 2px 5px #ccc;
   }
   .addBlog-content textarea{
     width: 97.5%;
@@ -143,12 +160,27 @@
     -ms-word-wrap: break-word;
     word-wrap: break-word;
   }
-  .preview-content h2{
+  .preview-content h4{
     text-align: center;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
   }
   .preview-blog-article{
     text-indent: 2em;
     font-size: 15px;
+  }
+  .addBlog-title input {
+    width: 750px;
+    height: 40px;
+    border: 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 0 10px;
+  }
+  .el-col-category ul li{
+    list-style: none;
+    padding: 0;
+    margin-right: 10px;
+    display: inline-block;
   }
 </style>
