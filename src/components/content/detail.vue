@@ -14,12 +14,19 @@
             <el-col :span="4">作者：{{blog.author}}</el-col>
             <el-col :span="12" class="blog-edit">
               <router-link :to="'/editBlog/'+id">编辑</router-link>
-              <a @click="deleteBlog">删除</a>
+              <a @click="dialogVisible = true">删除</a>
             </el-col>
           </el-row>
         </div>
       </el-col>
     </el-row>
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :modal-append-to-body="false">
+      <span>您确定要删除吗？</span>
+      <span slot="footer">
+        <el-button @click="deleteBlog">确定</el-button>
+        <el-button @click="dialogVisible=false">取消</el-button>
+      </span>
+    </el-dialog>
   </el-container>
 </template>
 
@@ -29,6 +36,7 @@
       data(){
           return {
             id : this.$route.params.id,
+            dialogVisible:false,
             blog:{}
           }
       },
@@ -102,5 +110,8 @@
     padding: 0;
     margin-right: 10px;
     display: inline-block;
+  }
+  .dialog{
+    z-index: 9999;
   }
 </style>

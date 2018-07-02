@@ -1,29 +1,26 @@
 <template>
   <el-container direction="vertical" class="addBlog-main">
-    <el-row>
+    <el-row class="blog-content">
       <el-col>
-        <form id="submit-form" v-if="!submitted">
-          <div class="addBlog-title">
-            <input @keyup="previewFn"  type="text" placeholder="博客标题" required="required" v-model="blog.title"/>
-          </div>
-          <div class="addBlog-category">
-            <span>分类：</span>
-            <label for="vue">Vue.js</label><input id="vue" type="checkbox" value="Vue.js" v-model="blog.categories">
-            <label for="node">Node.js</label><input id="node" type="checkbox" value="Node.js" v-model="blog.categories">
-            <label for="react">React.js</label><input id="react" type="checkbox" value="React.js" v-model="blog.categories">
-          </div>
-          <div class="addBlog-author">
-            <label>作者：</label>
-            <select v-model="blog.author">
-              <option v-for='author in authors'>{{author}}</option>
-            </select>
-          </div>
-          <div class="addBlog-content">
-            <textarea v-model="blog.content" placeholder="博客内容"></textarea>
-          </div>
-          <el-button @click="postFn">发布博客</el-button>
-        </form>
-        <dia-log v-if="submitted" @closed="closed($event)"></dia-log>
+        <div class="addBlog-title">
+          <input @keyup="previewFn"  type="text" placeholder="博客标题" required="required" v-model="blog.title"/>
+        </div>
+        <div class="addBlog-category">
+          <span>分类：</span>
+          <label for="vue">Vue.js</label><input id="vue" type="checkbox" value="Vue.js" v-model="blog.categories">
+          <label for="node">Node.js</label><input id="node" type="checkbox" value="Node.js" v-model="blog.categories">
+          <label for="react">React.js</label><input id="react" type="checkbox" value="React.js" v-model="blog.categories">
+        </div>
+        <div class="addBlog-author">
+          <label>作者：</label>
+          <select v-model="blog.author">
+            <option v-for='author in authors'>{{author}}</option>
+          </select>
+        </div>
+        <div class="addBlog-content">
+          <textarea v-model="blog.content" placeholder="博客内容"></textarea>
+        </div>
+        <el-button @click="submit">发布博客</el-button>
       </el-col>
     </el-row>
     <el-container direction="vertical" v-if="previewBlog">
@@ -45,6 +42,7 @@
         </el-col>
       </el-row>
     </el-container>
+    <dia-log v-if="dialogVisible" :blog="blog" :dialogVisible="dialogVisible" @closed="closed($event)"></dia-log>
   </el-container>
 </template>
 
@@ -58,9 +56,8 @@
       data(){
           return {
             authors:['jack','tom','pony'],
-            submitted:false,
             previewBlog:false,
-            blogId:null,
+            dialogVisible:false,
             blog:{
               title:'',
               content:'',
@@ -71,21 +68,15 @@
       },
       methods:{
           /*模拟把博客信息添加到服务器*/
-          postFn:function () {
-            // console.log(this.blog.title)
+        submit:function () {
             if (this.blog.title=='' || this.blog.content=="" || this.blog.author=='' || this.blog.categories==""){
               alert('必选内容不能为空！')
             } else{
-              this.$http.post("https://vue-blog-v112.firebaseio.com/posts.json", this.blog)
-                .then((data)=>{
-                  // console.log(data.body.name);    //测试(查看传输的数据)
-                  this.submitted = true;
-                  this.blogId = data.body.name;
-                })
+              this.dialogVisible = true;
             }
           },
         closed(event,value){
-            this.submitted = value;
+            this.dialogVisible = value;
         },
         previewFn:function(){
           this.previewBlog = true;
@@ -96,7 +87,7 @@
 </script>
 
 <style scoped>
-  #submit-form{
+  .blog-content{
     padding: 20px;
   }
   .addBlog-title,.addBlog-content,.addBlog-category,.addBlog-author{
