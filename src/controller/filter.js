@@ -9,7 +9,12 @@ Vue.filter('toUpCase',(value)=>{          //标题的首字母大写
   return strArr.join(' ');
 });
 Vue.filter('snippet',(value)=>{         //文章内容只显示100个字数
-  return value.slice(0,100) + '...'
+  if(value.length >= 100){
+    return value.slice(0,100) + '...'
+  } else{
+    return value
+  }
+
 });
 
 

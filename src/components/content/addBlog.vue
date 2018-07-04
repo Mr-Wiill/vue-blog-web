@@ -42,7 +42,7 @@
         </el-col>
       </el-row>
     </el-container>
-    <dia-log v-if="dialogVisible" :blog="blog" :dialogVisible="dialogVisible" @closed="closed($event)"></dia-log>
+    <dia-log v-if="dialogVisible" :blog="blog" :dialogEvent="dialogEvent" @closed="closed($event)"></dia-log>
   </el-container>
 </template>
 
@@ -58,6 +58,7 @@
             authors:['jack','tom','pony'],
             previewBlog:false,
             dialogVisible:false,
+            dialogEvent:'发布',
             blog:{
               title:'',
               content:'',
@@ -67,20 +68,25 @@
           }
       },
       methods:{
-          /*模拟把博客信息添加到服务器*/
         submit:function () {
-            if (this.blog.title=='' || this.blog.content=="" || this.blog.author=='' || this.blog.categories==""){
-              alert('必选内容不能为空！')
+            if (this.blog.title==''){
+              alert('标题不能为空！')
+            } else if(this.blog.content==""){
+              alert('内容不能为空！')
+            } else if( this.blog.categories==""){
+              alert('请选择分类！')
+            } else if (this.blog.author==''){
+              alert('请选择作者！')
             } else{
               this.dialogVisible = true;
             }
+          // this.dialogVisible = true;
           },
         closed(event,value){
             this.dialogVisible = value;
         },
         previewFn:function(){
           this.previewBlog = true;
-          // console.log('执行了keyup')
         }
       }
     }
@@ -103,6 +109,7 @@
     padding: 20px;
     z-index: 0;
     box-shadow: 2px 2px 5px #ccc;
+    /*position: relative;*/
   }
   .addBlog-content textarea{
     width: 97.5%;

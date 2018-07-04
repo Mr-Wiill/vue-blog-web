@@ -20,43 +20,48 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :modal-append-to-body="false">
-      <span>您确定要删除吗？</span>
-      <span slot="footer">
-        <el-button @click="deleteBlog">确定</el-button>
-        <el-button @click="dialogVisible=false">取消</el-button>
-      </span>
-    </el-dialog>
+    <dia-log v-if="dialogVisible" :dialog-event="dialogEvent" :blog-id="id" @closed="closeDialog($event)"></dia-log>
   </el-container>
 </template>
 
 <script>
+  // import DiaLog from '../../components/dialog/dialog'
+  import DiaLog from '../dialog/dialog'
+  import axios from 'axios'
     export default {
       name: "v-dialog",
+      components:{
+        DiaLog
+      },
       data(){
           return {
             id : this.$route.params.id,
             dialogVisible:false,
+            dialogEvent:'删除',
             blog:{}
           }
       },
       created(){
-        this.$http.get("https://vue-blog-v112.firebaseio.com/posts/"+this.id+'.json')
+        // this.$http.get("https://vue-blog-v112.firebaseio.com/posts/"+this.id+'.json')    //vue-resource请求方法
+        axios.get("/posts/"+this.id+'.json')    //axios请求方法
           .then((data)=>{
-            // console.log(data)
-            // this.blog = data.body;
-            return data.json();   //从服务器里读取blog对象，然后返回
+            // return data.json();   //vue-resource方法从服务器里读取blog对象，然后返回
+            return data.data;
           })
           .then((data)=>{
             this.blog = data;     //把返回值赋值给this.blog
           })
       },
       methods:{
-        deleteBlog(){
-          this.$http.delete('https://vue-blog-v112.firebaseio.com/posts/'+this.id+'.json')
+        /*deleteBlog(){
+          // this.$http.delete('https://vue-blog-v112.firebaseio.com/posts/'+this.id+'.json')   //vue-resource请求方法
+        axios.delete('/posts/'+this.id+'.json')     //axios请求方法
             .then(response=>{
               this.$router.push({path:'/'});
             })
+        }*/
+        closeDialog(event,value){
+          this.dialogVisible = value
         }
       }
     }
@@ -110,8 +115,5 @@
     padding: 0;
     margin-right: 10px;
     display: inline-block;
-  }
-  .dialog{
-    z-index: 9999;
   }
 </style>

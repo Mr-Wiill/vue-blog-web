@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import diaLog from '../../components/dialog/dialog'
+  import axios from 'axios'
+  import diaLog from '../../components/dialog/dialog'
     export default {
         name: "showBlog",
       components:{
@@ -32,25 +33,46 @@ import diaLog from '../../components/dialog/dialog'
             blogs:[],
           }
       },
-      created(){      //读取服务器数据
-        this.$http.get('https://vue-blog-v112.firebaseio.com/posts.json')
+      created(){     //读取服务器数据
+        /*vue-resource请求http方法*/
+        /*this.$http.get('https://vue-blog-v112.firebaseio.com/posts.json')
           .then((data)=>{
-            // this.blogs = data.body.slice(0,10);
-            // console.log(data.json());
-            return data.json();       //读取的是一个对象，并返回出去
+            return data.json();           //读取的是一个对象，并返回出去
           })
           .then((data)=>{
-            var blogsArr = [];      //定义一个空数组，接收返回的一个个对象
+            var blogsArr = [];            //定义一个空数组，接收每个对象的key值
             for (let key in data){
-              data[key].id = key;   //给对象定义一个id，并把唯一key赋值给id
+              data[key].id = key;         //给每个对象定义一个id，并把唯一key赋值给id
               blogsArr.push(data[key]);   //把读取的对象都添加到空数组里面
             }
-            this.blogs = blogsArr;    //把blogsArr赋值给blogs
-            // console.log(blogsArr)
+            this.blogs = blogsArr;        //把blogsArr赋值给blogs
+          })*/
+
+        /*axios请求http的方法*/
+        axios.get('/posts.json')
+          .then((data)=>{
+            return data.data;       //axios方法请求的是一个data对象（所有内容都存储在data对象里）
+          })
+          .then((data)=>{
+            let arr = [];
+            for (let key in data){
+              data[key].id = key;
+              arr.push(data[key]);
+            }
+            this.blogs = arr;
           })
       },
-      methods:{
-
+      computed:{
+        filteredBlogs(){       //过滤搜索结果
+          return this.blogs.filter((blog)=>{
+            if (blog.title.match(this.search.toLowerCase())) {      //博客标题匹配
+              return blog.title.match(this.search.toLowerCase());   //返回标题匹配的一个博客数组
+            }
+            else {
+              return blog.content.match(this.search.toLowerCase())     //博客内容匹配
+            }
+          })
+        }
       },
       directives:{     //自定义事件
         'rainbow':{
@@ -77,18 +99,6 @@ import diaLog from '../../components/dialog/dialog'
           }
         }
       },
-      computed:{
-          filteredBlogs:function(){       //过滤搜索结果
-            return this.blogs.filter((blog)=>{
-              if (blog.title.match(this.search.toLowerCase())) {      //博客标题匹配
-                return blog.title.match(this.search.toLowerCase());
-              }
-              else {
-                return blog.content.match(this.search.toLowerCase())     //博客内容匹配
-              }
-            })
-          }
-      }
     }
 </script>
 
