@@ -10,11 +10,11 @@ import filter from './controller/filter'
 import axios from 'axios'
 
 /*全局配置axios*/
-axios.defaults.baseURL = 'https://vue-blog-v112.firebaseio.com';
+axios.defaults.baseURL = 'https://pizza-app-65e84.firebaseio.com';
 
 // Vue.use(VueRouter);
 Vue.use(ElementUi);
-Vue.use(VueResource);
+// Vue.use(VueResource);
 
 new Vue({
   router,

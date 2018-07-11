@@ -29,6 +29,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
     export default {
         name: "addBlog",
       data(){
@@ -41,15 +42,15 @@
       },
       methods:{
           updateBlog(){
-            this.$http.get("https://vue-blog-v112.firebaseio.com/posts/"+this.id+'.json')
+            axios.get("/posts/"+this.id+'.json')
               .then(response=>{
-                // console.log(response.body);
-                this.blog = response.body
+                // console.log(response.data);
+                this.blog = response.data
               })
           },
           /*模拟把博客信息添加到服务器*/
           postFn:function () {
-            this.$http.put("https://vue-blog-v112.firebaseio.com/posts/"+this.id+'.json', this.blog)
+            axios.put("/posts/"+this.id+'.json', this.blog)
               .then( response=>{
                 this.$router.push({path:"/blog/"+this.id})
             })
