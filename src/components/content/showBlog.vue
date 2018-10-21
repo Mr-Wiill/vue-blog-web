@@ -99,6 +99,22 @@
           }
         }
       },
+      filters:{
+        toUpCase(value){
+          let strArr = value.toUpperCase().split(' ');
+          for (let i=0,len=strArr.length; i<len; i++){
+            strArr[i] = strArr[i].charAt(0)+strArr[i].slice(1).toLowerCase();
+          }
+          return strArr.join(' ');
+        },
+        snippet(value){
+          if(value.length >= 100){
+            return value.slice(0,100) + '...'
+          } else{
+            return value
+          }
+        }
+      }
     }
 </script>
 
