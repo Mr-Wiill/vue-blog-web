@@ -4,5 +4,5 @@
 
 这是一个偏前端的博客项目，其前端是基于Element-UI和Vue2.0开发实现的，后端的实现使用了Google的Firebase作为实时数据库，直接调用它提供的接口来实现数据的读取和存储。（由于项目使用了国外的firebase，所以需要连接VPN才能正常工作。）
 
-动态演示：
+动图演示：
 ![image](https://github.com/KBeginner/vue-blog-system/blob/master/src/assets/blog.gif)
